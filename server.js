@@ -5,6 +5,7 @@ const paths = require('./src/utils/ConstantsPaths')
 
 
 const app = express();
+app.use(express.json());
 
 mongoose.connect(
     'mongodb://localhost:27017/nodeapi', 

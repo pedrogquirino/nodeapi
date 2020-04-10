@@ -11,15 +11,20 @@ const ProductReposistory = {
 
     async getById(req, res) {
 
-        // const products = await Product.findById(res.json().)
-        // return res.json(products);
+        const product = await Product.findById(req.params.id);
+        return res.json(product);
     },
 
     async save(req, res) {
 
-        // const products = req.json();
-        // Product.sto
-        // return res.json
+        const product = await Product.create(req.body);
+        return res.json(product);
+    },
+
+    async update(req, res) {
+
+        const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        return res.json(product);
     },
 
 }
