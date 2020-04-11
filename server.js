@@ -8,7 +8,8 @@ const app = express();
 app.use(express.json());
 
 mongoose.connect(
-    'mongodb://mongodb:27017/nodeapi', 
+    'mongodb://localhost:27017/nodeapi', 
+    // 'mongodb://mongodb:27017/nodeapi', 
         { useNewUrlParser: true, 
             useUnifiedTopology: true  
         }
