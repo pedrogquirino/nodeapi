@@ -1,10 +1,10 @@
 const express = require('express');
 const routes = express.Router();
-const productController = require('./controllers/ProductController');
+const userController = require('./controllers/UserController');
 
 const Routes = [
 
-    productController
+    userController
 
 ];
 
