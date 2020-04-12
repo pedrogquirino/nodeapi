@@ -4,6 +4,23 @@ const User = mongoose.model('User');
 
 const UserRepository = {
 
+    async listWithPagination(pagination) {
+
+        var users = [];
+        
+        const page  = pagination.page;
+        const limit = parseInt(pagination.limit);
+
+        try {            
+            users = await User.paginate({},{ page, limit });
+        }
+        catch (Exception){
+            console.log(Exception);
+        }
+
+        return users;
+    },
+
     async list(req, res) {
         
         const page  = req.query.page;
@@ -13,10 +30,10 @@ const UserRepository = {
         return res.json(users);
     },
 
-    async getById(req, res) {
+    async findById(id) {
 
-        const user = await User.findById(req.params.id);
-        return res.json(user);
+        const user = await User.findById(id);
+        return user;
     },
 
     async save(req, res) {
