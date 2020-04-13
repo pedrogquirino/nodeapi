@@ -13,7 +13,7 @@ const HttpCodes = {
 const CheckThrow = (condition, HttpCodes, res) => {
 
     if(condition){
-        return res.status(HttpCodes.code).send();
+        res.status(HttpCodes.code).send();
     }
 }
 

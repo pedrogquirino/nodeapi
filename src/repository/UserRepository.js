@@ -21,13 +21,10 @@ const UserRepository = {
         return users;
     },
 
-    async list(req, res) {
+    async list() {
         
-        const page  = req.query.page;
-        const limit = parseInt(req.query.limit);
-
-        const users = await User.paginate({},{ page, limit });
-        return res.json(users);
+        const users = await User.find();
+        return users;
     },
 
     async findById(id) {
@@ -36,22 +33,21 @@ const UserRepository = {
         return user;
     },
 
-    async save(req, res) {
+    async save(newUser) {
 
-        const user = await User.create(req.body);
-        return res.json(user);
+        const user = await User.create(newUser);
+        return user;
     },
 
-    async update(req, res) {
+    async update(id, user) {
 
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        return res.json(user);
+        const userUpdated = await User.findByIdAndUpdate(id, user, { new: true });
+        return userUpdated;
     },
 
-    async delete(req, res) {
+    async delete(id) {
 
-        await User.findByIdAndRemove(req.params.id);
-        return res.send();        
+        await User.findByIdAndRemove(id);      
     },
 
 }

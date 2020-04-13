@@ -14,7 +14,13 @@ routes.get('/users',
         }
 
         const users = await userService.listWithPagination(Pagination);        
-        res.json(users);
+
+        if(users.length == 0) {
+            res.status(204).send();
+        }
+        else {
+            res.json(users);
+        }            
     }
 );
 
@@ -23,18 +29,44 @@ routes.get('/users/:id',
 
         const id = req.params.id;        
         const user = await userService.findById(id);
-        
-        httpHandler.CheckThrow(user == null, httpHandler.HttpCodes.NO_CONTENT, res);        
-console.log(user);
-        next(res, user);
-    },
-    (res, user) => {
-        res.json({"aasd":"asdas", "asda":"asdas"});        
+
+        if(user == null) {
+            res.status(204).send();
+        }
+        else {
+            res.json(user);
+        }        
+
     }
 );
-// routes.post('/users', UserRepository.save);
+
+routes.post('/users', 
+    async (req, res) => {
+
+        const userDto = req.body;
+
+        const user = await userService.save(userDto);
+        res.json(user);
+    }
+);
+
+routes.put('/users/:id', 
+    async (req, res) => {
+
+        const userDto = req.body;
+
+        const user = await userService.update(req.params.id, userDto);
+
+        if(user == null) {
+            res.status(404).send();
+        }
+        else {
+            res.json(user);
+        }        
+    }
+);
 // routes.get('/users/:id', UserRepository.getById);
-// routes.put('/users/:id', UserRepository.update);
+
 // routes.delete('/users/:id', UserRepository.delete);
 
 module.exports = routes;

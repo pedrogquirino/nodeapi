@@ -7,27 +7,28 @@ const UserService = {
         const users = await UserRepository.listWithPagination(Pagination);
         return users;
     },
+
     async findById(id) {
 
         const user = await UserRepository.findById(id);        
         return user;
     },
 
-    async save(User) {
+    async save(userDto) {
 
-        const user = await User.create(User);
+        const user = await UserRepository.save(userDto);
         return user;
     },
 
-    async update(req, res) {
+    async update(id, user) {
 
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        return res.json(user);
+        const userUpdated = await UserRepository.update(id, user, { new: true });
+        return userUpdated;
     },
 
-    async delete(req, res) {
+    async delete(id) {
 
-        await User.findByIdAndRemove(req.params.id);
+        await UserRepository.findByIdAndRemove(id);
         return res.send();        
     },
 
