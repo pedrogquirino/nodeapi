@@ -15,7 +15,7 @@ const UserRepository = {
             users = await User.paginate({},{ page, limit });
         }
         catch (Exception){
-            console.log(Exception);
+            throw new Error('Deu merda', 503);
         }
 
         return users;

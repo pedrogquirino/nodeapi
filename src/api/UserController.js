@@ -31,7 +31,7 @@ routes.get('/users/:id',
         const user = await userService.findById(id);
 
         if(user == null) {
-            res.status(204).send();
+            res.status(404).send();
         }
         else {
             res.json(user);
@@ -65,7 +65,6 @@ routes.put('/users/:id',
         }        
     }
 );
-// routes.get('/users/:id', UserRepository.getById);
 
 // routes.delete('/users/:id', UserRepository.delete);
 
