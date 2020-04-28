@@ -4,37 +4,51 @@ const User = mongoose.model('User');
 
 const UserRepository = {
 
-    async list(req, res) {
+    async listWithPagination(pagination) {
+
+        var users = [];
         
-        const page  = req.query.page;
-        const limit = parseInt(req.query.limit);
+        const page  = pagination.page;
+        const limit = parseInt(pagination.limit);
 
-        const users = await User.paginate({},{ page, limit });
-        return res.json(users);
+        try {            
+            users = await User.paginate({},{ page, limit });         
+            //throw new Error('Deu merda', 503).stack;
+        }
+        catch (e){            
+            throw e;
+        }
+
+        return users;
     },
 
-    async getById(req, res) {
-
-        const user = await User.findById(req.params.id);
-        return res.json(user);
+    async list() {
+        
+        const users = await User.find();
+        return users;
     },
 
-    async save(req, res) {
+    async findById(id) {
 
-        const user = await User.create(req.body);
-        return res.json(user);
+        const user = await User.findById(id);
+        return user;
     },
 
-    async update(req, res) {
+    async save(newUser) {
 
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        return res.json(user);
+        const user = await User.create(newUser);
+        return user;
     },
 
-    async delete(req, res) {
+    async update(id, user) {
 
-        await User.findByIdAndRemove(req.params.id);
-        return res.send();        
+        const userUpdated = await User.findByIdAndUpdate(id, user, { new: true });
+        return userUpdated;
+    },
+
+    async delete(id) {
+
+        await User.findByIdAndRemove(id);      
     },
 
 }
