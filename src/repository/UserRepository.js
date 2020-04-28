@@ -12,10 +12,11 @@ const UserRepository = {
         const limit = parseInt(pagination.limit);
 
         try {            
-            users = await User.paginate({},{ page, limit });
+            users = await User.paginate({},{ page, limit });         
+            //throw new Error('Deu merda', 503).stack;
         }
-        catch (Exception){
-            throw new Error('Deu merda', 503);
+        catch (e){            
+            throw e;
         }
 
         return users;

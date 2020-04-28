@@ -1,26 +1,32 @@
 const express = require('express');
 const userService = require('../services/UserService');
-const httpHandler = require('../utils/HttpHandler')
+const userRequest = require('../model/UserRequest');
+const pagination = require('../utils/Pagination');
+const { validationResult } = require('express-validator');
 
 const routes = express.Router();
 
 
-routes.get('/users', 
+routes.get('/users',
     async (req, res) => {        
 
-        const Pagination = {
-            page: req.query.page,            
-            limit: req.query.limit,
-        }
-
-        const users = await userService.listWithPagination(Pagination);        
-
-        if(users.length == 0) {
-            res.status(204).send();
-        }
-        else {
-            res.json(users);
-        }            
+        await userService.listWithPagination(pagination(req))
+        .then(users => 
+            {                
+                if(users.length == 0) {
+                    res.status(204).send();
+                }
+                else {
+                    res.json(users);
+                }
+            }     
+        )
+        .catch(e => {                
+                console.log(e)
+                res.status(500).send(e.Error);
+            }
+        );      
+      
     }
 );
 
@@ -31,7 +37,7 @@ routes.get('/users/:id',
         const user = await userService.findById(id);
 
         if(user == null) {
-            res.status(404).send();
+            res.status(204).send();
         }
         else {
             res.json(user);
@@ -40,13 +46,26 @@ routes.get('/users/:id',
     }
 );
 
-routes.post('/users', 
-    async (req, res) => {
+routes.post('/users',
 
+    userRequest.validator,
+    (req,res, next) => {
+
+        const errors = validationResult(req);
+
+        if(!errors.isEmpty()) {            
+            return res.status(400).send(errors.array());
+        }
+
+        next();
+    },
+
+    async (req, res) => {
+        
         const userDto = req.body;
 
         const user = await userService.save(userDto);
-        res.json(user);
+        return res.json(user);
     }
 );
 
@@ -58,7 +77,7 @@ routes.put('/users/:id',
         const user = await userService.update(req.params.id, userDto);
 
         if(user == null) {
-            res.status(404).send();
+            res.status(204).send();
         }
         else {
             res.json(user);

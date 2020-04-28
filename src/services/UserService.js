@@ -4,32 +4,28 @@ const UserRepository = require('../repository/UserRepository');
 const UserService = {
 
     async listWithPagination(Pagination) {
-        const users = await UserRepository.listWithPagination(Pagination);
-        return users;
+        
+        return await UserRepository.listWithPagination(Pagination);
     },
 
     async findById(id) {
 
-        const user = await UserRepository.findById(id);        
-        return user;
+        return await UserRepository.findById(id);        
     },
 
     async save(userDto) {
 
-        const user = await UserRepository.save(userDto);
-        return user;
+        return await UserRepository.save(userDto);
     },
 
     async update(id, user) {
-
-        const userUpdated = await UserRepository.update(id, user, { new: true });
-        return userUpdated;
+        
+        return await UserRepository.update(id, user, { new: true });        
     },
 
     async delete(id) {
 
-        await UserRepository.findByIdAndRemove(id);
-        return res.send();        
+        return await UserRepository.findByIdAndRemove(id);        
     },
 
 }
