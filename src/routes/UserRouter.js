@@ -10,9 +10,11 @@ const routes = express.Router();
 routes.get('/users',
     async (req, res) => {        
 
-        await userService.listWithPagination(pagination(req))
+        const page = pagination(req);
+
+        await userService.listWithPagination(page)
         .then(users => 
-            {                
+            {                              
                 if(users.length == 0) {
                     res.status(204).send();
                 }
@@ -21,20 +23,18 @@ routes.get('/users',
                 }
             }     
         )
-        .catch(e => {                
+        .catch(e => {                       
                 console.log(e)
                 res.status(500).send(e.Error);
             }
-        );      
-      
+        );            
     }
 );
 
 routes.get('/users/:id', 
     async (req, res, next) => {
 
-        const id = req.params.id;        
-        const user = await userService.findById(id);
+        const user = await userService.findById(req.params.id);
 
         if(user == null) {
             res.status(204).send();
@@ -49,8 +49,8 @@ routes.get('/users/:id',
 routes.post('/users',
 
     userRequest.validator,
-    (req,res, next) => {
-
+    (req, res, next) => {
+        
         const errors = validationResult(req);
 
         if(!errors.isEmpty()) {            
@@ -65,7 +65,7 @@ routes.post('/users',
         const userDto = req.body;
 
         const user = await userService.save(userDto);
-        return res.json(user);
+        return res.status(201).json(user);
     }
 );
 
@@ -85,6 +85,17 @@ routes.put('/users/:id',
     }
 );
 
-// routes.delete('/users/:id', UserRepository.delete);
+routes.delete('/users/:id', 
+    async(req, res) => {
+        await userService.delete(req.params.id)
+            .then(u => {
+                res.status(200).send();
+            })
+            .catch( e => {
+                res.status(404).send();
+            });
+    }
+);
+
 
 module.exports = routes;

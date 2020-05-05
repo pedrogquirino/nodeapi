@@ -25,7 +25,7 @@ const UserService = {
 
     async delete(id) {
 
-        return await UserRepository.findByIdAndRemove(id);        
+        return await UserRepository.delete(id);        
     },
 
 }

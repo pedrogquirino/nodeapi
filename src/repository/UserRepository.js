@@ -7,24 +7,14 @@ const UserRepository = {
     async listWithPagination(pagination) {
 
         var users = [];
-        
-        const page  = pagination.page;
-        const limit = parseInt(pagination.limit);
 
         try {            
-            users = await User.paginate({},{ page, limit });         
-            //throw new Error('Deu merda', 503).stack;
+            users = await User.paginate({},{ pagination });                     
         }
         catch (e){            
             throw e;
         }
 
-        return users;
-    },
-
-    async list() {
-        
-        const users = await User.find();
         return users;
     },
 
@@ -47,9 +37,16 @@ const UserRepository = {
     },
 
     async delete(id) {
-
-        await User.findByIdAndRemove(id);      
-    },
+        
+        try {
+            return await User.findOneAndDelete(id);
+        }
+        catch (e) {
+            console.log(e);
+            throw e;
+        }
+        
+    }
 
 }
 

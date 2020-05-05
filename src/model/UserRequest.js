@@ -3,7 +3,7 @@ const { check } = require('express-validator');
 
 const validator = [
     check('dataNascimento').not().isEmpty(),
-    check('sexo').isIn('M', 'F'),
+    check('sexo').isIn(['M','F']),
 ]
 
 

@@ -5,9 +5,13 @@ let Pagination = {
 
 
 const PaginationRequest = (request) => {
+
+    const reqPage = request.query.page == "" ? 1 : request.query.page;
+    const reqLimit = request.query.limit == "" ? 1 : parseInt(request.query.limit);
+
     return Pagination = {
-        page: request.query.page,     
-        limit: request.query.limit
+        page: reqPage,  
+        limit: reqLimit
     }
 }
 

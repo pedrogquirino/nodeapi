@@ -1,10 +1,10 @@
 const express = require('express');
 const routes = express.Router();
-const userController = require('./api/UserController');
+const userRouter = require('./routes/UserRouter');
 
 const Routes = [
 
-    userController
+    userRouter
 ];
 
 module.exports = routes.use(Routes);

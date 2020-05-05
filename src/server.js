@@ -9,7 +9,7 @@ app.use(express.json());
 
 mongoose.connect(
     'mongodb://localhost:27017/nodeapi', 
-    // 'mongodb://mongodb:27017/nodeapi', 
+    //'mongodb://mongodb:27017/nodeapi', 
         { useNewUrlParser: true, 
             useUnifiedTopology: true  
         }
